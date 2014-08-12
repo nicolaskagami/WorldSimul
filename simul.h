@@ -5,7 +5,7 @@
 #include<stdio.h>
 
 #define MAX_RES_PER_TILE 4
-#define SMOOTH_COEF 4
+#define SMOOTH_COEF 1 
 
 class Tile
 {

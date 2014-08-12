@@ -38,39 +38,40 @@ int Map::RandomizeHeight(int seed)
 }
 int Map::SmoothHeight()
 {
-    unsigned char * buffer;
+    int * buffer;
     int i;
-    buffer = (unsigned char*) malloc(height*width);
+    buffer = (int*) malloc(height*width*4);
     for(i=0;i<height*width;i++)
     {
         int coupling = 0;
-        buffer[i] = SMOOTH_COEF*map[i].height;
+        buffer[i] = (int) SMOOTH_COEF*map[i].height;
         if(i%width != 0)
         {
-            buffer[i]+=map[i-1].height;
+            buffer[i]+= (int) map[i-1].height;
             coupling++;
         }
         if(i%width != width-1) 
         {
-            buffer[i]+=map[i+1].height;
+            buffer[i]+= (int) map[i+1].height;
             coupling++;
         }
         if(i/width != 0)
         {
-            buffer[i]+=map[i-width].height;
+            buffer[i]+= (int) map[i-width].height;
             coupling++;
         }
         if(i/width != height-1)
         {
-            buffer[i]+=map[i+width].height;
+            buffer[i]+= (int) map[i+width].height;
             coupling++;
         }
-        buffer[i]/=(SMOOTH_COEF+coupling);
-        printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
+        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
     }
     for(i=0;i<height*width;i++)
-        map[i].height = buffer[i];
+        map[i].height = (unsigned char) buffer[i];
     free(buffer);
+    return 0;
 }
 void Map::print()
 {
