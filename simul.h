@@ -1,3 +1,5 @@
+#ifndef WORLD_SIMUL_H
+#define WORLD_SIMUL_H
 //Simulator version 0.1
 //Author: Nicolas Silveira Kagami
 
@@ -26,10 +28,9 @@ class Tile
 };
 class Map
 {
-    private:
+    public:
         Tile * map;
         int height,width;
-    public:
         Map(int x, int y);
         int RandomizeHeight(int seed);
         int SmoothHeight();
@@ -74,3 +75,4 @@ class Humanity
         Humanity();
         void print();
 };
+#endif

@@ -11,10 +11,12 @@ endif
 
 all: simul
 
-simul: main.o simul.o TextureManager.o
-	g++ -o simul main.o TextureManager.o simul.o $(LDFLAGS) 
+simul: main.o simul.o TextureManager.o game.o
+	g++ -o simul main.o TextureManager.o simul.o game.o $(LDFLAGS) 
 main.o: main.cpp
 	g++ -c main.cpp
+Game.o: Game.cpp
+	g++ -c Game.cpp
 TextureManager.o: TextureManager.cpp
 	g++ -c TextureManager.cpp -lSDL2
 simul.o: simul.cpp simul.h
