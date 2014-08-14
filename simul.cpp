@@ -86,28 +86,25 @@ void Map::print()
         printf("\n");
     }
 }
-Human::Human()
+Human::Human(int identification)
 {
-    printf("Creating Human\n");
+    printf("Creating Human: %d\n",identification);
+    id = identification;
+    age = 0;
+    sex = rand()%2;
+    happiness = 128;
+    health = 255;
+    nourishment = 128;
 }
 Human::~Human()
 {
-    printf("Deleting Human\n");
 }
-void Human::createHumans(int amount)
+Humanity::Humanity()
 {
     int i;
-    for(i=0;i<amount;i++)
+    humanity.reserve(INITIAL_POPULATION);
+    for(i=0;i<INITIAL_POPULATION;i++)
     {
-        Human subject;
-        subject.age = 0;
-        subject.sex = rand() % 2;
-        Human::idCounter++;
-        subject.id = Human::idCounter;
-        happiness = 128;
-        nourishment = 128;
-        health = 255;
-        
-        Human::humanity.push_back(subject);
+        humanity.push_back(Human(i));
     }
 }

@@ -5,6 +5,7 @@
 #include<stdio.h>
 #include<vector>
 
+#define INITIAL_POPULATION 256
 #define MAX_RES_PER_TILE 4
 #define MAX_HUMANS 1024
 #define MAX_FRIENDS 8
@@ -47,7 +48,7 @@ class ResourceInfo
         int x;
         int y;
         int responsible;
-}
+};
 class Human 
 {
     public:
@@ -62,9 +63,12 @@ class Human
         unsigned char nourishment;
         unsigned char health;
 
-        static std::vector <Human> humanity;
-        static int idCounter;
-        static void createHumans(int amount);
-        Human();
+        Human(int identification);
         ~Human();
+};
+class Humanity
+{
+    public:
+        std::vector<Human> humanity;
+        Humanity();
 };

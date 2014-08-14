@@ -1,7 +1,7 @@
-
 #include<stdio.h>
 #include"simul.h"
 
+Humanity demos;
 int main(int argc, char ** argv)
 {
     Map mapa1(10,10);
@@ -9,5 +9,7 @@ int main(int argc, char ** argv)
     mapa1.print();
     mapa1.SmoothHeight();
     mapa1.print();
+
+
 
 }
