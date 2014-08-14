@@ -90,7 +90,7 @@ Human::Human(int identification)
 {
     printf("Creating Human: %d\n",identification);
     id = identification;
-    age = 0;
+    age = 15 + rand() % 10;
     sex = rand()%2;
     happiness = 128;
     health = 255;
@@ -99,6 +99,10 @@ Human::Human(int identification)
 Human::~Human()
 {
 }
+void Human::print()
+{
+    printf("ID: %d, Sex: %d, Age: %d, Happiness: %d, Nourishment: %d, Health: %d\n",id, sex, age, happiness, nourishment, health);
+}
 Humanity::Humanity()
 {
     int i;
@@ -106,5 +110,14 @@ Humanity::Humanity()
     for(i=0;i<INITIAL_POPULATION;i++)
     {
         humanity.push_back(Human(i));
+    }
+}
+void Humanity::print()
+{
+    int i;
+    printf("SIZE: %d\n",humanity.size());
+    for(i=0;i < humanity.size();i++)
+    {
+        humanity[i].print();
     }
 }

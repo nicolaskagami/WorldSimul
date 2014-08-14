@@ -65,10 +65,12 @@ class Human
 
         Human(int identification);
         ~Human();
+        void print();
 };
 class Humanity
 {
     public:
         std::vector<Human> humanity;
         Humanity();
+        void print();
 };
