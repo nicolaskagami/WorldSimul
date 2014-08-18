@@ -48,7 +48,6 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     running = true;
     mapa.RandomizeHeight(2);
     mapa.SmoothHeight();
-
     return true;
 }
 
@@ -60,7 +59,7 @@ void Game::render()
     {
         for(int j = 0; j< mapa.width;j++)
         {
-            TheTextureManger.draw("Ground",16*j,16*i,(mapa.map[i*mapa.width+j].height % 8)*16,16,16,16,ptRenderer);
+            TheTextureManger.draw("Ground",16*j,16*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,16,16,ptRenderer);
         }
 
     }

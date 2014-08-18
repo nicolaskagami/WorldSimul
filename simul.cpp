@@ -88,7 +88,6 @@ void Map::print()
 }
 Human::Human(int identification)
 {
-    printf("Creating Human: %d\n",identification);
     id = identification;
     age = 15 + rand() % 10;
     sex = rand()%2;

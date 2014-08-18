@@ -21,13 +21,8 @@ int main(int argc, char* args[])
         WINDOW_HEIGHT,
         SDL_WINDOW_SHOWN);
  
-    TheTextureManger.load("./Textures/A.bmp","Ground",TheGame.getRenderer());
+    TheTextureManger.load("./Textures/B.bmp","Ground",TheGame.getRenderer());
     
-    Map mapa1(10,10);
-    mapa1.RandomizeHeight(0);
-    mapa1.SmoothHeight();
-    mapa1.print();
-
     while(TheGame.isRunning())
     {    
         TheGame.render();
