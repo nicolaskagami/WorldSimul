@@ -11,8 +11,8 @@ endif
 
 all: simul
 
-simul: main.o simul.o TextureManager.o game.o
-	g++ -o simul main.o TextureManager.o simul.o game.o $(LDFLAGS) 
+simul: main.o simul.o TextureManager.o Game.o
+	g++ -o simul main.o TextureManager.o simul.o Game.o $(LDFLAGS) 
 main.o: main.cpp
 	g++ -c main.cpp
 Game.o: Game.cpp

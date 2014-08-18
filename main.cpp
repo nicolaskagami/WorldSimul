@@ -21,13 +21,13 @@ int main(int argc, char* args[])
         WINDOW_HEIGHT,
         SDL_WINDOW_SHOWN);
  
-    TheTextureManger.load("./Textures/B.bmp","Ground",TheGame.getRenderer());
+    TheTextureManager.load("./Textures/B.bmp","Ground",TheGame.getRenderer());
     
     while(TheGame.isRunning())
     {    
         TheGame.render();
         TheGame.handleEvents();
-        usleep(100000);
+        usleep(10000);
     }
     
     TheGame.clean();

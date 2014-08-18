@@ -59,13 +59,13 @@ void Game::render()
     {
         for(int j = 0; j< mapa.width;j++)
         {
-            TheTextureManger.draw("Ground",16*j,16*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,16,16,ptRenderer);
+            TheTextureManager.draw("Ground",16*j,16*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,16,16,ptRenderer);
         }
 
     }
-    //TheTextureManger.draw("Ground",0,0,0,0,32,32,ptRenderer);
-    //TheTextureManger.draw("Ground",0,32,0,32,32,32,ptRenderer);
-    //TheTextureManger.draw("Ground",32,0,32,0,32,32,ptRenderer);
+    //TheTextureManager.draw("Ground",0,0,0,0,32,32,ptRenderer);
+    //TheTextureManager.draw("Ground",0,32,0,32,32,32,ptRenderer);
+    //TheTextureManager.draw("Ground",32,0,32,0,32,32,ptRenderer);
     
     // draw to the screen.
     SDL_RenderPresent(ptRenderer);
