@@ -73,6 +73,80 @@ int Map::SmoothHeight()
     free(buffer);
     return 0;
 }
+int Map::Rain(int intensity)
+{
+    int * buffer;
+    int i;
+    buffer = (int*) malloc(height*width*4);
+    for(i=0;i<height*width;i++)
+    {
+        int coupling = 0;
+        buffer[i] = (int) SMOOTH_COEF*map[i].height;
+        if(i%width != 0)
+        {
+            buffer[i]+= (int) map[i-1].height;
+            coupling++;
+        }
+        if(i%width != width-1) 
+        {
+            buffer[i]+= (int) map[i+1].height;
+            coupling++;
+        }
+        if(i/width != 0)
+        {
+            buffer[i]+= (int) map[i-width].height;
+            coupling++;
+        }
+        if(i/width != height-1)
+        {
+            buffer[i]+= (int) map[i+width].height;
+            coupling++;
+        }
+        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
+    }
+    for(i=0;i<height*width;i++)
+        map[i].height = (unsigned char) buffer[i];
+    free(buffer);
+    return 0;
+}
+int Map::Runoff()
+{
+    int * buffer;
+    int i;
+    buffer = (int*) malloc(height*width*4);
+    for(i=0;i<height*width;i++)
+    {
+        int coupling = 0;
+        buffer[i] = (int) SMOOTH_COEF*map[i].height;
+        if(i%width != 0)
+        {
+            buffer[i]+= (int) map[i-1].height;
+            coupling++;
+        }
+        if(i%width != width-1) 
+        {
+            buffer[i]+= (int) map[i+1].height;
+            coupling++;
+        }
+        if(i/width != 0)
+        {
+            buffer[i]+= (int) map[i-width].height;
+            coupling++;
+        }
+        if(i/width != height-1)
+        {
+            buffer[i]+= (int) map[i+width].height;
+            coupling++;
+        }
+        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
+    }
+    for(i=0;i<height*width;i++)
+        map[i].height = (unsigned char) buffer[i];
+    free(buffer);
+    return 0;
+}
 void Map::print()
 {
     int x,y;

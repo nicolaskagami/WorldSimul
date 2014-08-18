@@ -12,7 +12,10 @@
 #define MAX_HUMANS 1024
 #define MAX_FRIENDS 8
 #define MAX_FOES 8
+
 #define SMOOTH_COEF 1 
+#define PRECIPITATION_HEIGHT_COEF 0.5 //How much precipitation per height
+#define WATER_HEIGHT_COEF 0.5 //How high the water can be to overflow
 
 
 //Have a knowledge of places where resources can be found, groups/people responsible
@@ -24,6 +27,7 @@ class Tile
         //int resource[MAX_RES_PER_TILE];
         //unsigned char quantity[MAX_RES_PER_TILE];
         unsigned char height;
+        unsigned char water;
         //add nutrients, humidity, erosion
 };
 class Map
@@ -34,6 +38,8 @@ class Map
         Map(int x, int y);
         int RandomizeHeight(int seed);
         int SmoothHeight();
+        int Rain(int intensity);
+        int Runoff(); 
         ~Map();
         void print();
 
