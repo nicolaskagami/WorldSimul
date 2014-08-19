@@ -3,6 +3,13 @@
 
 #include"simul.h"
 
+void Tile::print()
+{
+    printf("Height: %.3d \t",height);
+    printf("Water: %.3d \t",water);
+    printf("Hardness: %.3d \t",hardness);
+    printf("Absorption Rate: %.3d \n",absorption_rate);
+}
 Map::Map(int x, int y)
 {
     printf("Creating Map %dx%d\n",x,y);
@@ -28,9 +35,11 @@ int Map::RandomizeHeight(int seed)
         srand(seed);
         int i;
         for(i=0;i<height*width;i++)
+        {
             map[i].height = (unsigned char) rand();
             map[i].hardness = (unsigned char) rand();
-            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * rand()/map[i].hardness;
+            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * (float) rand()/map[i].hardness;
+        }
         return 0;
     }
     else
@@ -93,7 +102,6 @@ int Map::Rain(int intensity)
 }
 int Map::Runoff()
 {
-    printf("Runoff\n");
     int * buffer;
     int i;
     buffer = (int*) malloc(height*width*4);
@@ -123,8 +131,10 @@ int Map::Runoff()
         }
         buffer[i]/= (int) (RUNOFF_COEF+coupling);
         buffer[i]-= (int) (map[i].water*map[i].absorption_rate)/256;
-        map[i].height+= (unsigned char) BUILDOFF_COEF*(buffer[i] - map[i].water);
-        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
+ //       map[i].print();
+        map[i].height+= (unsigned char) BUILDOFF_COEF* (float)(buffer[i] - map[i].water);
+   //     map[i].print();
+     //   printf("\n");
     }
     for(i=0;i<height*width;i++)
         map[i].water = (unsigned char) buffer[i] - map[i].height;

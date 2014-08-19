@@ -6,7 +6,7 @@
 #define TILE_HEIGHT 16
 #define TILE_WIDTH 16
 
-Map mapa(40,50);
+Map mapa(80,100);
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
@@ -48,7 +48,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     running = true;
     mapa.RandomizeHeight(2);
     mapa.SmoothHeight();
-    //mapa.Rain(1);
+    mapa.Rain(1);
     return true;
 }
 

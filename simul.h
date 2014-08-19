@@ -16,7 +16,7 @@
 #define SMOOTH_COEF 1 
 #define PRECIPITATION_HEIGHT_COEF 0.5 //How much precipitation per height
 #define WATER_HEIGHT_COEF 0.5 //How high the water can be to overflow
-#define ABSORPTION_COEF 0.1
+#define ABSORPTION_COEF 1
 #define RUNOFF_COEF 1
 #define BUILDOFF_COEF 0.01
 
@@ -33,6 +33,7 @@ class Tile
         unsigned char hardness;
         unsigned char absorption_rate;
         //add nutrients, humidity, erosion
+        void print();
 };
 class Map
 {
