@@ -27,7 +27,7 @@ int main(int argc, char* args[])
     {    
         TheGame.render();
         TheGame.handleEvents();
-        usleep(10000);
+        usleep(100000);
     }
     
     TheGame.clean();

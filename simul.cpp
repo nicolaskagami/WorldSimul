@@ -29,6 +29,8 @@ int Map::RandomizeHeight(int seed)
         int i;
         for(i=0;i<height*width;i++)
             map[i].height = (unsigned char) rand();
+            map[i].hardness = (unsigned char) rand();
+            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * rand()/map[i].hardness;
         return 0;
     }
     else
@@ -38,6 +40,7 @@ int Map::RandomizeHeight(int seed)
 }
 int Map::SmoothHeight()
 {
+    printf("Smoothing Height\n");
     int * buffer;
     int i;
     buffer = (int*) malloc(height*width*4);
@@ -75,75 +78,56 @@ int Map::SmoothHeight()
 }
 int Map::Rain(int intensity)
 {
-    int * buffer;
-    int i;
-    buffer = (int*) malloc(height*width*4);
-    for(i=0;i<height*width;i++)
+    printf("Raining\n");
+    if(map)
     {
-        int coupling = 0;
-        buffer[i] = (int) SMOOTH_COEF*map[i].height;
-        if(i%width != 0)
-        {
-            buffer[i]+= (int) map[i-1].height;
-            coupling++;
-        }
-        if(i%width != width-1) 
-        {
-            buffer[i]+= (int) map[i+1].height;
-            coupling++;
-        }
-        if(i/width != 0)
-        {
-            buffer[i]+= (int) map[i-width].height;
-            coupling++;
-        }
-        if(i/width != height-1)
-        {
-            buffer[i]+= (int) map[i+width].height;
-            coupling++;
-        }
-        buffer[i]/= (int) (SMOOTH_COEF+coupling);
-        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
+        int i;
+        for(i=0;i<height*width;i++)
+            map[i].water = intensity*map[i].height + (unsigned char) rand();
+        return 0;
     }
-    for(i=0;i<height*width;i++)
-        map[i].height = (unsigned char) buffer[i];
-    free(buffer);
-    return 0;
+    else
+    {
+        return -1;
+    }
 }
 int Map::Runoff()
 {
+    printf("Runoff\n");
     int * buffer;
     int i;
     buffer = (int*) malloc(height*width*4);
     for(i=0;i<height*width;i++)
     {
         int coupling = 0;
-        buffer[i] = (int) SMOOTH_COEF*map[i].height;
+        buffer[i] = (int) RUNOFF_COEF*map[i].height + map[i].water;
         if(i%width != 0)
         {
-            buffer[i]+= (int) map[i-1].height;
+            buffer[i]+= (int) map[i-1].height + map[i-1].water;
             coupling++;
         }
         if(i%width != width-1) 
         {
-            buffer[i]+= (int) map[i+1].height;
+            buffer[i]+= (int) map[i+1].height + map[i+1].water;
             coupling++;
         }
         if(i/width != 0)
         {
-            buffer[i]+= (int) map[i-width].height;
+            buffer[i]+= (int) map[i-width].height + map[i-width].water;
             coupling++;
         }
         if(i/width != height-1)
         {
-            buffer[i]+= (int) map[i+width].height;
+            buffer[i]+= (int) map[i+width].height + map[i+width].water;
             coupling++;
         }
-        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        buffer[i]/= (int) (RUNOFF_COEF+coupling);
+        buffer[i]-= (int) (map[i].water*map[i].absorption_rate)/256;
+        map[i].height+= (unsigned char) BUILDOFF_COEF*(buffer[i] - map[i].water);
         //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].height,coupling,buffer[i]);
     }
     for(i=0;i<height*width;i++)
-        map[i].height = (unsigned char) buffer[i];
+        map[i].water = (unsigned char) buffer[i] - map[i].height;
     free(buffer);
     return 0;
 }
