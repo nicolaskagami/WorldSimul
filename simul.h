@@ -18,7 +18,7 @@
 #define WATER_HEIGHT_COEF 0.5 //How high the water can be to overflow
 #define ABSORPTION_COEF 1
 #define RUNOFF_COEF 1
-#define BUILDOFF_COEF 0.01
+#define BUILDOFF_COEF 0.1
 
 //Have a knowledge of places where resources can be found, groups/people responsible
 

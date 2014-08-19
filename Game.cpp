@@ -6,7 +6,7 @@
 #define TILE_HEIGHT 16
 #define TILE_WIDTH 16
 
-Map mapa(80,100);
+Map mapa(40,50);
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {

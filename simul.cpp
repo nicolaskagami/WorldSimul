@@ -92,7 +92,7 @@ int Map::Rain(int intensity)
     {
         int i;
         for(i=0;i<height*width;i++)
-            map[i].water = intensity*map[i].height + (unsigned char) rand();
+            map[i].water = (unsigned char) intensity*(map[i].height + (unsigned char) rand());
         return 0;
     }
     else
@@ -108,7 +108,7 @@ int Map::Runoff()
     for(i=0;i<height*width;i++)
     {
         int coupling = 0;
-        buffer[i] = (int) RUNOFF_COEF*map[i].height + map[i].water;
+        buffer[i] = (int) RUNOFF_COEF*((int)map[i].height + (int)map[i].water);
         if(i%width != 0)
         {
             buffer[i]+= (int) map[i-1].height + map[i-1].water;
@@ -130,14 +130,14 @@ int Map::Runoff()
             coupling++;
         }
         buffer[i]/= (int) (RUNOFF_COEF+coupling);
-        buffer[i]-= (int) (map[i].water*map[i].absorption_rate)/256;
+        //buffer[i]-= (int) ((buffer[i] - (int) map[i].height)*(int)map[i].absorption_rate)/512;
  //       map[i].print();
-        map[i].height+= (unsigned char) BUILDOFF_COEF* (float)(buffer[i] - map[i].water);
+        map[i].height+= (unsigned char) BUILDOFF_COEF* (int)(buffer[i] - map[i].water);
    //     map[i].print();
      //   printf("\n");
     }
     for(i=0;i<height*width;i++)
-        map[i].water = (unsigned char) buffer[i] - map[i].height;
+        map[i].water = (unsigned char) ((unsigned char)buffer[i] - map[i].height);
     free(buffer);
     return 0;
 }
