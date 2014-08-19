@@ -108,36 +108,45 @@ int Map::Runoff()
     for(i=0;i<height*width;i++)
     {
         int coupling = 0;
-        buffer[i] = (int) RUNOFF_COEF*((int)map[i].height + (int)map[i].water);
+        int water_level = (int) RUNOFF_COEF*((int)map[i].height + (int)map[i].water);
+        buffer[i] = water_level; 
+        int absorbed;
+        int runoff;
+        int local_wl;
         if(i%width != 0)
         {
-            buffer[i]+= (int) map[i-1].height + map[i-1].water;
+            local_wl= (int) map[i-1].height + (int) map[i-1].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         if(i%width != width-1) 
         {
-            buffer[i]+= (int) map[i+1].height + map[i+1].water;
+            local_wl= (int) map[i+1].height + (int) map[i+1].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         if(i/width != 0)
         {
-            buffer[i]+= (int) map[i-width].height + map[i-width].water;
+            local_wl= (int) map[i-width].height + (int) map[i-width].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         if(i/width != height-1)
         {
-            buffer[i]+= (int) map[i+width].height + map[i+width].water;
+            local_wl= (int) map[i+width].height + (int) map[i+width].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         buffer[i]/= (int) (RUNOFF_COEF+coupling);
-        //buffer[i]-= (int) ((buffer[i] - (int) map[i].height)*(int)map[i].absorption_rate)/512;
- //       map[i].print();
-        map[i].height+= (unsigned char) BUILDOFF_COEF* (int)(buffer[i] - map[i].water);
-   //     map[i].print();
-     //   printf("\n");
+        absorbed = (int) (buffer[i]*(int)map[i].absorption_rate)/256;
+        buffer[i]-= absorbed;
+        runoff = (int) map[i].water - buffer[i]; 
+        map[i].height+= (unsigned char) (buffer[i] - (int) map[i].water)/BUILDOFF_COEF;
+        //map[i].print();
+        //printf("\n");
     }
     for(i=0;i<height*width;i++)
-        map[i].water = (unsigned char) ((unsigned char)buffer[i] - map[i].height);
+        map[i].water = (unsigned char)buffer[i];
     free(buffer);
     return 0;
 }

@@ -48,7 +48,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     running = true;
     mapa.RandomizeHeight(2);
     mapa.SmoothHeight();
-    mapa.Rain(1);
+    mapa.Rain(100);
     return true;
 }
 
@@ -56,6 +56,7 @@ void Game::render()
 {
     // clear to rendering color.
     SDL_RenderClear(ptRenderer);
+    mapa.Rain(1);
     mapa.Runoff();
     for(int i = 0; i < mapa.height;i++)
     {
