@@ -1,5 +1,5 @@
 #Makefile Supports Both Windows (under mingw) and linux
-SDL_LIB = -lSDL2main -lSDL2
+SDL_LIB = -lSDL2main -lSDL2 
 SYS := $(shell gcc -dumpmachine)
 ifneq (, $(findstring linux, $(SYS)))
 	LDFLAGS = $(SDL_LIB)
