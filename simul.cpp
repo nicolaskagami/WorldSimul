@@ -110,8 +110,9 @@ int Map::Runoff()
         int coupling = 0;
         int water_level = (int) RUNOFF_COEF*((int)map[i].height + (int)map[i].water);
         buffer[i] = water_level; 
-        char absorbed;
-        char runoff;
+        unsigned char absorbed;
+        unsigned char runoff;
+        unsigned char aux;
         int local_wl;
         if(i%width != 0)
         {
@@ -144,7 +145,23 @@ int Map::Runoff()
         //map[i].height+= (unsigned char) ((int)((int)(255-map[i].height)*(absorbed - runoff))*(255 -(int)map[i].hardness))/BUILDOFF_COEF;
         printf("Runoff: %d, Absorbed: %d\n",runoff, absorbed);
         printf("Height: %.3d\t",map[i].height);
-        map[i].height+= (unsigned char) (((absorbed - runoff))/((map[i].height)*(map[i].hardness)));
+        //map[i].height+= (unsigned char) (((absorbed - runoff))/((map[i].height)*(map[i].hardness)));
+        if(runoff > absorbed)
+        {
+            if(map[i].hardness == 0)
+                map[i].hardness = 1;
+            aux =(unsigned char) map[i].height - ((int)(runoff - absorbed))/map[i].hardness;
+            if(aux<=map[i].height)
+                map[i].height = aux;
+        }
+        else
+        {
+            if(map[i].hardness == 0)
+                map[i].hardness = 1;
+            aux = map[i].height + ((absorbed - runoff)/(map[i].hardness));
+            if(aux>=map[i].height)
+                map[i].height = aux;
+        }
         printf("Height: %.3d\n",map[i].height);
         map[i].hardness+= (unsigned char) ((255-map[i].hardness)*(runoff-absorbed))/256;
         map[i].absorption_rate+= (unsigned char) ((255-map[i].absorption_rate)*((absorbed-runoff))/256);
