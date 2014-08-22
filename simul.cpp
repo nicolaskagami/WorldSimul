@@ -38,7 +38,9 @@ int Map::RandomizeHeight(int seed)
         {
             map[i].height = (unsigned char) rand();
             map[i].hardness = (unsigned char) rand();
-            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * (float) rand()/map[i].hardness;
+            if( map[i].hardness == 0)
+                map[i].hardness = 1;
+            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * (int) rand()/map[i].hardness;
         }
         return 0;
     }
@@ -92,7 +94,7 @@ int Map::Rain(int intensity)
     {
         int i;
         for(i=0;i<height*width;i++)
-            map[i].water = (unsigned char) intensity*(map[i].height + (unsigned char) rand());
+            map[i].water = (unsigned char) intensity*(map[i].height + rand());
         return 0;
     }
     else
@@ -117,25 +119,25 @@ int Map::Runoff()
         if(i%width != 0)
         {
             local_wl= (int) map[i-1].height + (int) map[i-1].water;
-            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
+            buffer[i]+= ((local_wl - water_level)/(1+local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         if(i%width != width-1) 
         {
             local_wl= (int) map[i+1].height + (int) map[i+1].water;
-            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
+            buffer[i]+= ((local_wl - water_level)/(1+local_wl+water_level))*map[i-1].water;
             coupling++;
         }
         if(i/width != 0)
         {
             local_wl= (int) map[i-width].height + (int) map[i-width].water;
-            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level+1))*map[i-1].water;
             coupling++;
         }
         if(i/width != height-1)
         {
             local_wl= (int) map[i+width].height + (int) map[i+width].water;
-            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level))*map[i-1].water;
+            buffer[i]+= ((local_wl - water_level)/(local_wl+water_level+1))*map[i-1].water;
             coupling++;
         }
         buffer[i]/= (int) (RUNOFF_COEF+coupling);
@@ -143,8 +145,8 @@ int Map::Runoff()
         buffer[i]-= absorbed;
         runoff = map[i].water - buffer[i]; 
         //map[i].height+= (unsigned char) ((int)((int)(255-map[i].height)*(absorbed - runoff))*(255 -(int)map[i].hardness))/BUILDOFF_COEF;
-        printf("Runoff: %d, Absorbed: %d\n",runoff, absorbed);
-        printf("Height: %.3d\t",map[i].height);
+        //printf("Runoff: %d, Absorbed: %d\n",runoff, absorbed);
+        //printf("Height: %.3d\t",map[i].height);
         //map[i].height+= (unsigned char) (((absorbed - runoff))/((map[i].height)*(map[i].hardness)));
         if(runoff > absorbed)
         {
@@ -162,7 +164,7 @@ int Map::Runoff()
             if(aux>=map[i].height)
                 map[i].height = aux;
         }
-        printf("Height: %.3d\n",map[i].height);
+        //printf("Height: %.3d\n",map[i].height);
         map[i].hardness+= (unsigned char) ((255-map[i].hardness)*(runoff-absorbed))/256;
         map[i].absorption_rate+= (unsigned char) ((255-map[i].absorption_rate)*((absorbed-runoff))/256);
         //map[i].print();
