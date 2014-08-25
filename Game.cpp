@@ -6,7 +6,7 @@
 #define TILE_HEIGHT 16
 #define TILE_WIDTH 16
 
-Map mapa(40,50);
+Map mapa(80,100);
 
 bool Game::init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
@@ -48,6 +48,11 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     running = true;
     mapa.RandomizeHeight(2);
     mapa.SmoothHeight();
+    mapa.SmoothHeight();
+    mapa.SmoothHeight();
+    mapa.SmoothHeight();
+    mapa.SmoothHeight();
+    mapa.SmoothHeight();
     mapa.Rain(100);
     return true;
 }
@@ -57,12 +62,11 @@ void Game::render()
     // clear to rendering color.
     SDL_RenderClear(ptRenderer);
     mapa.Rain(1);
-    mapa.Runoff();
     for(int i = 0; i < mapa.height;i++)
     {
         for(int j = 0; j< mapa.width;j++)
         {
-            TheTextureManager.draw("Ground",16*j,16*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,16,16,ptRenderer);
+            TheTextureManager.draw("Ground",8*j,8*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,8,8,ptRenderer);
         }
 
     }
@@ -70,7 +74,7 @@ void Game::render()
     {
         for(int j = 0; j< mapa.width;j++)
         {
-            TheTextureManager.draw("Ground",16*j+4,16*i+4,(mapa.map[i*mapa.width+j].water / 32 )*16,32,8,8,ptRenderer);
+            TheTextureManager.draw("Ground",8*j+2,8*i+2,(mapa.map[i*mapa.width+j].water / 32 )*16,32,4,4,ptRenderer);
         }
 
     }
