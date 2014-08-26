@@ -2,6 +2,34 @@
 //Author: Nicolas Silveira Kagami
 
 #include"simul.h"
+/*
+    Ideas
+    
+Attributes:
+    Height
+    Water
+    Hardness (1/absorption)
+    Absorption dependant on plants?
+    Stillness (calculated through the difference in water levels) Problem: river is not still, but the water level is constant
+    
+
+Goals:
+    Mountains
+        Generated out of high places in the mesh which are smoothed down due to the runoff
+    Plains
+        Generated out of faults which get leveled due to buildup
+    Rivers
+        Generated out of faults which lead the water to another place
+    Lakes
+        Generated out of low places that have saturated absorption
+
+Processes:
+    Rain
+    Runoff
+    Buildup
+    Wind and clouds?
+
+*/
 
 void Tile::print()
 {
@@ -93,8 +121,15 @@ int Map::Rain(int intensity)
     if(map)
     {
         int i;
+        unsigned char rain;
         for(i=0;i<height*width;i++)
-            map[i].water = (unsigned char) intensity*(map[i].height + rand());
+        {
+            rain = (unsigned char) intensity*(map[i].height);
+            if(rain + map[i].water > 255)
+                map[i].water=255;
+            else
+                map[i].water+=rain;
+        }
         return 0;
     }
     else
@@ -153,8 +188,12 @@ int Map::Runoff()
             if(map[i].hardness == 0)
                 map[i].hardness = 1;
             aux =(unsigned char) map[i].height - ((int)(runoff - absorbed))/map[i].hardness;
+            printf("runoff: %.3d, absorbed: %.3d, hardness: %.3d\n",runoff, absorbed,map[i].hardness);
+            printf("heigth: %.3d, aux: %.3d\n",map[i].height,aux);
             if(aux<=map[i].height)
                 map[i].height = aux;
+            else
+                printf("wtf\n");
         }
         else
         {
@@ -165,8 +204,8 @@ int Map::Runoff()
                 map[i].height = aux;
         }
         //printf("Height: %.3d\n",map[i].height);
-        map[i].hardness+= (unsigned char) ((255-map[i].hardness)*(runoff-absorbed))/256;
-        map[i].absorption_rate+= (unsigned char) ((255-map[i].absorption_rate)*((absorbed-runoff))/256);
+        //map[i].hardness+= (unsigned char) ((255-map[i].hardness)*(runoff-absorbed))/256;
+        //map[i].absorption_rate+= (unsigned char) ((255-map[i].absorption_rate)*((absorbed-runoff))/256);
         //map[i].print();
         //printf("\n");
     }
