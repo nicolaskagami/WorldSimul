@@ -29,6 +29,7 @@ class Tile
         //int resource[MAX_RES_PER_TILE];
         //unsigned char quantity[MAX_RES_PER_TILE];
         unsigned char height;
+        unsigned char plate;
         unsigned char water;
         unsigned char hardness;
         unsigned char absorption_rate;
@@ -43,6 +44,8 @@ class Map
         Map(int x, int y);
         int RandomizeHeight(int seed);
         int SmoothHeight();
+        int RandomizePlate(int seed);
+        int SmoothPlate();
         int Rain(int intensity);
         int Runoff(); 
         ~Map();

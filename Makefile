@@ -4,15 +4,21 @@
 BINARIES=./bin
 SOURCE=./src
 INCLUDE=./include
-
 SDL_LIB = -lSDL2main -lSDL2 
 SYS := $(shell gcc -dumpmachine)
-ifneq (, $(findstring linux, $(SYS)))
-	LDFLAGS = $(SDL_LIB)
-else ifneq(, $(findstring mingw, $(SYS)))
-	LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB)
+
+ifneq (,$(findstring linux, $(SYS)))
+	#Linux
+LDFLAGS = $(SDL_LIB)
+$(info Compiling for Linux)
+else ifneq (,$(findstring mingw, $(SYS)))
+	#Windows MingW
+LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB)
+$(info Compiling for Windows MingW)
 else
-	echo "Unrecognized Option"
+	#Others
+$(info OS not recognised)
+all:
 endif
 
 all: $(BINARIES)/simul
@@ -20,13 +26,13 @@ all: $(BINARIES)/simul
 $(BINARIES)/simul: $(BINARIES)/main.o $(BINARIES)/simul.o $(BINARIES)/TextureManager.o $(BINARIES)/Game.o
 	g++ -o $(BINARIES)/simul $(BINARIES)/main.o $(BINARIES)/TextureManager.o $(BINARIES)/simul.o $(BINARIES)/Game.o $(LDFLAGS) 
 $(BINARIES)/main.o: $(SOURCE)/main.cpp
-	g++ -c $(SOURCE)/main.cpp
+	g++ -c $(SOURCE)/main.cpp -o $(BINARIES)/main.o
 $(BINARIES)/Game.o: $(SOURCE)/Game.cpp
-	g++ -c $(SOURCE)/Game.cpp
+	g++ -c $(SOURCE)/Game.cpp -o $(BINARIES)/Game.o
 $(BINARIES)/TextureManager.o: $(SOURCE)/TextureManager.cpp
-	g++ -c $(SOURCE)/TextureManager.cpp -lSDL2
+	g++ -c $(SOURCE)/TextureManager.cpp -lSDL2 -o $(BINARIES)/TextureManager.o
 $(BINARIES)/simul.o: $(SOURCE)/simul.cpp $(INCLUDE)/simul.h
-	g++ -c $(SOURCE)/simul.cpp
+	g++ -c $(SOURCE)/simul.cpp -o $(BINARIES)/simul.o
 
 clean: 
 	rm -rf $(BINARIES)/*.o

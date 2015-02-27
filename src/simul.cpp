@@ -1,7 +1,7 @@
 //Simulator version 0.1
 //Author: Nicolas Silveira Kagami
 
-#include"simul.h"
+#include"../include/simul.h"
 /*
     Ideas
     
@@ -112,6 +112,104 @@ int Map::SmoothHeight()
     }
     for(i=0;i<height*width;i++)
         map[i].height = (unsigned char) buffer[i];
+    free(buffer);
+    return 0;
+}
+int Map::RandomizePlate(int seed)
+{
+    printf("Randomizing Plate\n");
+    if(map)
+    {
+        srand(seed);
+        int i;
+        for(i=0;i<height*width;i++)
+        {
+            map[i].plate = (unsigned char) rand();
+            map[i].hardness = (unsigned char) rand();
+            if( map[i].hardness == 0)
+                map[i].hardness = 1;
+            map[i].absorption_rate = (unsigned char) ABSORPTION_COEF * (int) rand()/map[i].hardness;
+        }
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
+}
+int Map::SmoothPlate()
+{
+    printf("Smoothing Plate\n");
+    int * buffer;
+    int i;
+    buffer = (int*) malloc(height*width*4);
+    for(i=0;i<height*width;i++)
+    {
+        int coupling = 0;
+        buffer[i] = (int) SMOOTH_COEF*map[i].plate;
+        if(i%width != 0)
+        {
+            buffer[i]+= (int) map[i-1].plate;
+            coupling++;
+        }
+        if(i%width != width-1) 
+        {
+            buffer[i]+= (int) map[i+1].plate;
+            coupling++;
+        }
+        if(i/width != 0)
+        {
+            buffer[i]+= (int) map[i-width].plate;
+            coupling++;
+        }
+        if(i/width != height-1)
+        {
+            buffer[i]+= (int) map[i+width].plate;
+            coupling++;
+        }
+        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].plate,coupling,buffer[i]);
+    }
+    for(i=0;i<height*width;i++)
+        map[i].plate = (unsigned char) buffer[i];
+    free(buffer);
+    return 0;
+}
+int Map::AggregatePlates()
+{
+    printf("Aggregating Plate\n");
+    int * buffer;
+    int i;
+    buffer = (int*) malloc(height*width*4);
+    for(i=0;i<height*width;i++)
+    { 
+        int coupling = 0;
+        buffer[i] = (int) SMOOTH_COEF*map[i].plate;
+        if(i%width != 0)
+        {
+            buffer[i]+= (int) map[i-1].plate;
+            coupling++;
+        }
+        if(i%width != width-1) 
+        {
+            buffer[i]+= (int) map[i+1].plate;
+            coupling++;
+        }
+        if(i/width != 0)
+        {
+            buffer[i]+= (int) map[i-width].plate;
+            coupling++;
+        }
+        if(i/width != height-1)
+        {
+            buffer[i]+= (int) map[i+width].plate;
+            coupling++;
+        }
+        buffer[i]/= (int) (SMOOTH_COEF+coupling);
+        //printf("OLD: %.3d, Coup:%d, New: %.3d\n",map[i].plate,coupling,buffer[i]);
+    }
+    for(i=0;i<height*width;i++)
+        map[i].plate = (unsigned char) buffer[i];
     free(buffer);
     return 0;
 }

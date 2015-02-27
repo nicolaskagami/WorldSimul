@@ -1,5 +1,5 @@
 //Game object implementation. Handles the game loop.
-#include "Game.h"
+#include "../include/Game.h"
 
 #include <stdlib.h>
 
@@ -53,6 +53,8 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     mapa.SmoothHeight();
     mapa.SmoothHeight();
     mapa.SmoothHeight();
+    mapa.RandomizePlate(2);
+    //mapa.SmoothPlate();
     mapa.Rain(100);
     return true;
 }
@@ -61,23 +63,22 @@ void Game::render()
 {
     // clear to rendering color.
     SDL_RenderClear(ptRenderer);
-    mapa.Rain(1);
     for(int i = 0; i < mapa.height;i++)
     {
         for(int j = 0; j< mapa.width;j++)
         {
-            TheTextureManager.draw("Ground",8*j,8*i,(mapa.map[i*mapa.width+j].height / 32 )*16,16,8,8,ptRenderer);
+            TheTextureManager.draw("Ground",8*j,8*i,(mapa.map[i*mapa.width+j].plate / 32 )*16,16,8,8,ptRenderer);
         }
 
     }
-    for(int i = 0; i < mapa.height;i++)
+/*    for(int i = 0; i < mapa.height;i++)
     {
         for(int j = 0; j< mapa.width;j++)
         {
             TheTextureManager.draw("Ground",8*j+2,8*i+2,(mapa.map[i*mapa.width+j].water / 32 )*16,32,4,4,ptRenderer);
         }
 
-    }
+     }*/
     //TheTextureManager.draw("Ground",0,0,0,0,32,32,ptRenderer);
     //TheTextureManager.draw("Ground",0,32,0,32,32,32,ptRenderer);
     //TheTextureManager.draw("Ground",32,0,32,0,32,32,ptRenderer);
@@ -89,6 +90,7 @@ void Game::render()
 void Game::update()
 {
    // Nothing for now.
+   
 }
 
 void Game::handleEvents()
@@ -109,13 +111,7 @@ void Game::handleEvents()
 
 void Game::clean()
 {
-
     SDL_DestroyWindow(ptWindow);
     SDL_DestroyRenderer(ptRenderer);
     SDL_Quit();
 }
-
-
-
-
-

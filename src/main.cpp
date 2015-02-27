@@ -1,9 +1,9 @@
 #include<stdio.h>
 #include<unistd.h>
-#include"simul.h"
-#include"SDL2/SDL.h"
-#include"Game.h"
-#include"TextureManager.h"
+#include"../include/simul.h"
+#include"../include/SDL2/SDL.h"
+#include"../include/Game.h"
+#include"../include/TextureManager.h"
 
 #define WINDOW_HEIGHT 640 
 #define WINDOW_WIDTH 800 
@@ -27,7 +27,7 @@ int main(int argc, char* args[])
     {    
         TheGame.render();
         TheGame.handleEvents();
-        usleep(100000);
+        usleep(100);
     }
     
     TheGame.clean();

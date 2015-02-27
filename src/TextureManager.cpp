@@ -1,5 +1,5 @@
 //TextureManager implementation. Handles the storing and drawing of textures.
-#include "TextureManager.h"
+#include "../include/TextureManager.h"
 
 
 bool TextureManager::load(std::string fileName,
