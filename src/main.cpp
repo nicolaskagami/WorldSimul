@@ -9,8 +9,6 @@
 #define WINDOW_WIDTH 800 
 #define WINDOW_TITLE "World Simulation"
 
-Humanity demos;
-
 int main(int argc, char* args[])
 {
     
