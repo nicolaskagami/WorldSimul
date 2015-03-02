@@ -1,5 +1,6 @@
 //Simulator version 0.1
 //Author: Nicolas Silveira Kagami
+//Bruno esteve aqui
 
 #include"simul.h"
 /*
