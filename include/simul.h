@@ -7,21 +7,15 @@
 #include<stdio.h>
 #include<vector>
 
-#define INITIAL_POPULATION 256
-#define MAX_RES_PER_TILE 4
-#define MAX_HUMANS 1024
-#define MAX_FRIENDS 8
-#define MAX_FOES 8
-
+//Geo
+#define PLATE_COEF 5
+#define PLATE_MAX 4 
 #define SMOOTH_COEF 1 
 #define PRECIPITATION_HEIGHT_COEF 0.5 //How much precipitation per height
 #define WATER_HEIGHT_COEF 0.5 //How high the water can be to overflow
 #define ABSORPTION_COEF 1
 #define RUNOFF_COEF 1
 #define BUILDOFF_COEF 10
-
-//Have a knowledge of places where resources can be found, groups/people responsible
-
 
 class Tile
 {
@@ -46,6 +40,7 @@ class Map
         int SmoothHeight();
         int RandomizePlate(int seed);
         int SmoothPlate();
+        int AggregatePlates();
         int Rain(int intensity);
         int Runoff(); 
         ~Map();
@@ -63,30 +58,5 @@ class ResourceInfo
         int x;
         int y;
         int responsible;
-};
-class Human 
-{
-    public:
-        int id;
-        unsigned char sex;
-        unsigned char age;
-        int friends[MAX_FRIENDS];
-        unsigned char friends_intensity[MAX_FRIENDS];
-        int foes[MAX_FOES];
-        unsigned char foes_intensity[MAX_FOES];
-        unsigned char happiness;
-        unsigned char nourishment;
-        unsigned char health;
-
-        Human(int identification);
-        ~Human();
-        void print();
-};
-class Humanity
-{
-    public:
-        std::vector<Human> humanity;
-        Humanity();
-        void print();
 };
 #endif
