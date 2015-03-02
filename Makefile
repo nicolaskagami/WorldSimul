@@ -13,9 +13,9 @@ LDFLAGS = $(SDL_LIB)
 $(info Compiling for Linux)
 else ifneq (,$(findstring mingw, $(SYS)))
 	#Windows MingW
-BINARIES=.\bin\
-SOURCE=.\src\
-INCLUDE=.\include\
+BINARIES=.\\bin\\
+SOURCE=.\\src\\
+INCLUDE=.\\include\\
 LDFLAGS = -lmingw32 -mwindows -mconsole $(SDL_LIB)
 $(info Compiling for Windows MingW)
 else
