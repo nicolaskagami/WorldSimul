@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<unistd.h>
 #include"../include/simul.h"
-#include"../include/SDL2/SDL.h"
+//#include"../include/SDL2/SDL.h"
 #include"../include/Game.h"
 #include"../include/TextureManager.h"
 
@@ -26,6 +26,7 @@ int main(int argc, char* args[])
         TheGame.render();
         TheGame.handleEvents();
         usleep(100);
+        TheGame.update();
     }
     
     TheGame.clean();
